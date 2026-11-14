@@ -12,7 +12,7 @@ const CODE = fs.readFileSync(path.join(dir, '..', 'apps-script', 'Code.gs'), 'ut
 const HEADERS = ['id', 'createdAt', 'name', 'phone', 'email', 'workshop', 'preferredContact', 'message', 'status', 'note', 'contactLog', 'confirmedAt', 'updatedAt'];
 const OWNER = 'owner@example.com';
 
-/** Trang tính giả: ô có kiểu '@' giữ nguyên văn bản; ô khác tự biến "=..." thành công thức, giống Google. */
+/** setValues phân tích dấu '=' ngay cả trong ô có định dạng văn bản. */
 function makeSheet(rows, { header = HEADERS } = {}) {
   const cells = new Map();
   const key = (r, c) => `${r}:${c}`;
@@ -37,8 +37,9 @@ function makeSheet(rows, { header = HEADERS } = {}) {
           writes.push({ r, c, nr, nc });
           vals.forEach((rowVals, i) => rowVals.forEach((v, j) => {
             const x = get(r + i, c + j);
-            const isFormula = x.fmt !== '@' && typeof v === 'string' && /^[=]/.test(v);
-            cells.set(key(r + i, c + j), { fmt: x.fmt, f: isFormula ? v : '', v: isFormula ? '#EVAL' : v });
+            const isFormula = typeof v === 'string' && v.startsWith('=');
+            const isEscaped = typeof v === 'string' && v.startsWith("'");
+            cells.set(key(r + i, c + j), { fmt: x.fmt, f: isFormula ? v : '', v: isFormula ? '#EVAL' : isEscaped ? v.slice(1) : v });
           }));
           lastRow = Math.max(lastRow, r + nr - 1);
         },

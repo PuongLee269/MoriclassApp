@@ -462,9 +462,10 @@ window.addEventListener('hashchange', function () { S.openId = ''; $('#layer').i
 
 /* Liên kết sâu từ email: #dang-ky/DK0001 (hoặc ?id=DK0001). Trong Apps Script, địa chỉ trang ngoài lấy qua google.script.url. */
 function openFromHash(hash, param) {
-  var m = /^#?dang-ky\/(DK\d{4,})$/.exec(hash || '') || (param && param.id && /^DK\d{4,}$/.test(param.id[0]) ? [0, param.id[0]] : null);
+  var m = /^#?dang-ky\/(DK\d{4,})$/.exec(hash || '') || /^(DK\d{4,})$/.exec(param && param.id || '');
   if (!m || !S.rows.some(function (r) { return r.id === m[1]; })) return;
-  if (route() !== 'dang-ky') { location.hash = '#dang-ky'; setTimeout(function () { drawer(m[1]); }, 0); } else drawer(m[1]);
+  if (route() !== 'dang-ky') location.hash = '#dang-ky/' + m[1];
+  else drawer(m[1]);
 }
 render();
 load().then(function () {

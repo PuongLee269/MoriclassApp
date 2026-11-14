@@ -72,8 +72,12 @@ function apiUpdate(payload) {
     if (next.error) return fail_(next.error);
 
     var target = sheet.getRange(rowNumber, FIRST_APP_COL, 1, APP_COLS);
-    target.setNumberFormat('@'); // ép văn bản thuần: không bao giờ thành công thức hay ngày
-    target.setValues([[next.status, next.note, next.contactLog, next.confirmedAt, next.updatedAt]]);
+    target.setNumberFormat('@');
+    var values = [next.status, next.note, next.contactLog, next.confirmedAt, next.updatedAt];
+    // setValues vẫn phân tích dấu '=' trong ô có định dạng văn bản.
+    target.setValues([values.map(function (value) {
+      return /^[=']/.test(value) ? "'" + value : value;
+    })]);
     SpreadsheetApp.flush();
 
     var after = readRow_(sheet, rowNumber);
