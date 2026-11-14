@@ -1,7 +1,7 @@
 # Nhiệm vụ: chỉnh sửa giao diện app quản lý đăng ký lớp học ME.MORI Class
 
 ## Bản hiện có
-Một trang HTML duy nhất (`index.html` ở thư mục gốc), CSS và JS viết trực tiếp, không dùng framework. Tất cả dữ liệu hiện là dữ liệu mẫu cứng trong mã. Đây là bản giao diện để duyệt, chưa có backend.
+Một trang HTML duy nhất (`apps-script/Index.html`), CSS và JS viết trực tiếp, không dùng framework. Máy chủ nằm ở `apps-script/Code.gs`. Mở trực tiếp file HTML trong trình duyệt thì chạy bằng dữ liệu mẫu (có banner báo rõ), còn khi chạy trong Apps Script thì đọc và ghi Trang tính thật. Giao diện không được tự ghi vào cột A đến H.
 
 ## App này làm gì
 ME.MORI Class (moriclass.com) là lớp học nghệ thuật kể chuyện, cinematic, quay dựng cho creator. Chủ lớp dùng app một mình, chủ yếu trên điện thoại, để:
